@@ -34,9 +34,9 @@ interface EditFormProps {
 }
 
 const EditableForm = (props: EditFormProps) => {
-  const [taskName, setTaskName] = useState(props.task?.name);
+  const [taskName, setTaskName] = useState(props.task?.name || "");
   const [taskDescription, setTaskDescription] = useState(
-    props.task?.description
+    props.task?.description || ""
   );
   const [taskDueDate, setTaskDueDate] = useState(
     props.task?.dueDate ? new Date(props.task?.dueDate) : new Date()
@@ -48,9 +48,14 @@ const EditableForm = (props: EditFormProps) => {
     dueDate: taskDueDate,
   });
 
+  const onSubmit = (event) => {
+    event.preventDefault();
+    props.onSave(getValues(), props.task?.id);
+  };
+
   return (
     <ContainerStyles>
-      <form onSubmit={() => props.onSave(getValues(), props.task?.id)}>
+      <form onSubmit={onSubmit}>
         <InputWithLabel
           title={"Name"}
           value={taskName}
