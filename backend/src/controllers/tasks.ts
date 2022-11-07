@@ -5,9 +5,11 @@ export const taskRouter = express.Router();
 
 // GET task list
 taskRouter.get("/", (_request, response) => {
-  Task.find({}).then((tasks) => {
-    response.json(tasks);
-  });
+  Task.find({})
+    .sort({ updatedAt: -1 })
+    .then((tasks) => {
+      response.json(tasks);
+    });
 });
 
 // POST task
@@ -23,8 +25,8 @@ taskRouter.post("/", (request, response, next) => {
   task
     .save()
     .then((savedTask) => savedTask.toJSON())
-    .then((savedAndFormattedPerson) => {
-      response.json(savedAndFormattedPerson);
+    .then((savedAndFormattedTask) => {
+      response.json(savedAndFormattedTask);
     })
     .catch((error: Error) => next(error));
 });
