@@ -1,7 +1,7 @@
 import { TaskStatus } from "../types/task";
 
 const getTimeDifference = (dueDate: string): number => {
-  const currentDateTime = new Date().getTime();
+  const currentDateTime = new Date(new Date().toDateString()).getTime();
   const dueDateTime = new Date(dueDate).getTime();
 
   return currentDateTime - dueDateTime;

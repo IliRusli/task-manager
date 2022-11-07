@@ -1,11 +1,7 @@
-import { Error } from "../types/error";
 import * as logger from "./logger";
+import { RequestHandler } from "express";
 
-export const requestLogger = (
-  request: any,
-  _response: unknown,
-  next: () => void
-) => {
+export const requestLogger: RequestHandler = (request, _response, next) => {
   logger.info("Method:", request.method);
   logger.info("Path:  ", request.path);
   logger.info("Body:  ", request.body);
@@ -13,11 +9,10 @@ export const requestLogger = (
   next();
 };
 
-export const unknownEndpoint = (_request: unknown, response: any) => {
+export const unknownEndpoint: RequestHandler = (_request, response) => {
   response.status(404).send({ error: "Unknown endpoint" });
 };
 
-// TODO improve typings
 export const errorHandler = (
   error: Error,
   _request: unknown,
