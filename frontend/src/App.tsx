@@ -41,26 +41,24 @@ const App = () => {
     }, 5000);
   };
 
-  const handleFormSubmit = async (task: BaseTask, id?: string) => {
-    if (!id) {
-      const response = await createTask(task).catch((error) => {
-        handleNotification(
-          `Unable to create task: ${error.response.data.error}`,
-          "error"
-        );
-      });
+  const saveTask = async (task: BaseTask) => {
+    const response = await createTask(task).catch((error) => {
+      handleNotification(
+        `Unable to create task: ${error.response.data.error}`,
+        "error"
+      );
+    });
 
-      if (response) {
-        await getTaskList();
-        handleNotification(
-          `Created task ${response.name} successfully!`,
-          "success"
-        );
-      }
-
-      return;
+    if (response) {
+      await getTaskList();
+      handleNotification(
+        `Created task ${response.name} successfully!`,
+        "success"
+      );
     }
+  };
 
+  const editTask = async (task: BaseTask, id: string) => {
     const response = await updateTask(id, task).catch((error) => {
       handleNotification(
         `Unable to update task: ${error.response.data.error}`,
@@ -75,6 +73,18 @@ const App = () => {
         "success"
       );
     }
+  };
+
+  const handleFormSubmit = async (
+    task: BaseTask,
+    id?: string
+  ): Promise<void> => {
+    if (!id) {
+      await saveTask(task);
+      return;
+    }
+
+    await editTask(task, id);
   };
 
   return (
